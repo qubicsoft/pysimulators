@@ -215,8 +215,7 @@ def test_healpix_convolution():
     keywords = {'fwhm': np.radians(30),
                 'iter': 2,
                 'lmax': 8,
-                'use_weights': True,
-                'regression': True}
+                'use_weights': True}
     expected = hp.smoothing(input, **keywords)
 
     op = HealpixConvolutionGaussianOperator(**keywords)

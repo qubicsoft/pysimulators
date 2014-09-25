@@ -51,8 +51,8 @@ def test_cartesian_healpix_error():
             op(i, o)
             return
         assert_raises(ValueError, op.__call__, i, o)
-    for i, o in itertools.product((np.array(1.), np.zeros(2), np.zeros(3)),
-                                  (np.array(1.), np.zeros(2), np.zeros(3))):
+    for i, o in itertools.product((np.ones(()), np.ones(2), np.ones(3)),
+                                  (np.empty(()), np.empty(2), np.empty(3))):
         yield func, i, o
 
 

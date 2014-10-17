@@ -8,8 +8,7 @@ from pyoperators.utils.testing import (
     assert_same, skiptest)
 from pysimulators import Quantity
 from pysimulators.geometry import create_grid, create_grid_squares
-from pysimulators import (
-    Layout, LayoutGrid, LayoutGridCircles, LayoutVertex, LayoutGridSquares)
+from pysimulators import Layout, LayoutGrid, LayoutGridSquares
 
 
 def test_layout_grid_errors():
@@ -50,18 +49,18 @@ def test_layout_vertex():
     center = np.mean(vertex, axis=-2)
     get_vertex = lambda: vertex.reshape(-1, 4, 2)
 
-    class Vertex1(LayoutVertex):
+    class Vertex1(Layout):
         @property
         def vertex(self):
             return get_vertex()
 
-    class Vertex2(LayoutVertex):
+    class Vertex2(Layout):
         def vertex(self):
             return get_vertex()
 
-    layouts = (LayoutVertex(shape, 4, vertex=vertex),
-               LayoutVertex(shape, 4, vertex=get_vertex),
-               Vertex1(shape, 4), Vertex2(shape, 4))
+    layouts = (Layout(shape, vertex=vertex),
+               Layout(shape, vertex=get_vertex),
+               Vertex1(shape), Vertex2(shape))
 
     def func(layout):
         assert_equal(layout.nvertices, 4)
@@ -101,9 +100,9 @@ def test_layout_grid_circles():
     center = create_grid(
         shape, spacing, center=origin, xreflection=xreflection,
         yreflection=yreflection, angle=angle)
-    layout = LayoutGridCircles(
+    layout = LayoutGrid(
         shape, spacing, origin=origin, xreflection=xreflection,
-        yreflection=yreflection, angle=angle)
+        yreflection=yreflection, angle=angle, radius=spacing/2)
     assert not hasattr(layout, 'nvertices')
     assert_same(layout.radius, spacing / 2)
     assert_same(layout.all.center, center)
@@ -121,8 +120,7 @@ def test_layout_grid_circles_unit():
               r, Quantity(r), Quantity(r, 'mm'), Quantity(r*1e-3, 'm'))
 
     def func(s, r):
-        layout = LayoutGridCircles(shape, s, radius=r,
-                                   selection=selection)
+        layout = LayoutGrid(shape, s, radius=r, selection=selection)
         if (not isinstance(s, Quantity) or s.unit == '') and \
            isinstance(r, Quantity) and r.unit == 'm':
             expectedval = 0.4e-3

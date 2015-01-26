@@ -77,14 +77,17 @@ class Layout(PackedTable):
         if hasattr(self, 'vertex'):
             self.nvertices = self.vertex.shape[-2]
 
-    def plot(self, transform=None, edgecolor=None, facecolor=None,
-             fill=None, **keywords):
+    def plot(self, autoscale=True, transform=None, edgecolor=None,
+             facecolor=None, fill=None, **keywords):
         """
         Plot the layout.
 
         Parameters
         ----------
-        transform : function, Operator
+        autoscale : boolean
+            If true, the axes of the plot will be updated to match the
+            boundaries of the detectors.
+        transform : callable, Operator
             Operator to be used to transform the layout coordinates into
             the data coordinate system.
 
@@ -130,7 +133,8 @@ class Layout(PackedTable):
                     a.add_patch(mp.Polygon(c, closed=True, edgecolor=edgecolor,
                                            facecolor=facecolor, fill=fill,
                                            **keywords))
-            a.autoscale_view()
+            if autoscale:
+                a.autoscale_view()
         elif coords.ndim == 2:
             if 'color' not in keywords:
                 keywords['color'] = 'black'
@@ -138,7 +142,8 @@ class Layout(PackedTable):
                 keywords['marker'] = 'o'
             if 'linestyle' not in keywords:
                 keywords['linestyle'] = ''
-            mp.plot(coords[:, 0], coords[:, 1], **keywords)
+            mp.plot(coords[:, 0], coords[:, 1], scalex=autoscale,
+                    scaley=autoscale, **keywords)
         else:
             raise ValueError('Invalid number of dimensions.')
         mp.show()

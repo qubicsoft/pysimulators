@@ -1,8 +1,4 @@
 from __future__ import absolute_import, division, print_function
-try:
-    from matplotlib import pyplot as mp
-except:  # pragma: no coverage
-    pass
 import numpy as np
 from .core import PackedTable
 from ..geometry import create_circle, create_grid, create_grid_squares
@@ -92,6 +88,7 @@ class Layout(PackedTable):
             the data coordinate system.
 
         """
+        import matplotlib.pyplot as mp
         if hasattr(self, 'vertex'):
             coords = self.vertex[..., :2]
         elif hasattr(self, 'radius'):

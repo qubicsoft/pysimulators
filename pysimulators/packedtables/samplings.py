@@ -1,14 +1,9 @@
 from __future__ import division
-
 try:
     import kapteyn.maputils as km
 except ImportError:
     km = None
 import numpy as np
-try:
-    import matplotlib.pyplot as mp
-except ImportError:
-    pass
 from astropy.time import Time, TimeDelta
 from pyoperators import (
     DifferenceOperator, MPI, NormalizeOperator, Spherical2CartesianOperator)
@@ -236,6 +231,7 @@ class PointingEquatorial(PointingSpherical):
             percentile of the minimum and maximum values to be displayed.
 
         """
+        import matplotlib.pyplot as mp
         if km is None:
             raise RuntimeError('The kapteyn library is required.')
         if isscalarlike(self.masked) and self.masked or np.all(self.masked):
@@ -363,6 +359,7 @@ class PointingScanEquatorial(PointingEquatorial):
 
 
 def _plot_scan(image, ra, dec, linewidth=None, **kw):
+    import matplotlib.pyplot as mp
     x, y = image.topixel(ra, dec)
     p = mp.plot(x, y, linewidth=linewidth, **kw)
     for i in xrange(ra.size):

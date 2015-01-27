@@ -12,16 +12,10 @@ These classes are useful to load, manipulate and save FITs files.
 They also contain specialised display methods.
 """
 from __future__ import division
-
 try:
     import kapteyn.maputils as km
 except ImportError:
     km = None
-try:
-    import matplotlib
-    import matplotlib.pyplot as mp
-except ImportError:
-    pass
 import numpy as np
 import os
 import pickle
@@ -294,6 +288,8 @@ class FitsArray(Quantity):
         -------
         >>> Map(np.arange(100).reshape((10,10))).imsave('plot.png')
         """
+        import matplotlib
+        import matplotlib.pyplot as mp
         is_interactive = matplotlib.is_interactive()
         matplotlib.interactive(False)
         dpi = 80.
@@ -336,6 +332,7 @@ class FitsArray(Quantity):
         **keywords : additional are keywords passed to matplotlib's imshow.
 
         """
+        import matplotlib.pyplot as mp
         if np.iscomplexobj(self):
             data = abs(self.magnitude)
         else:
@@ -704,6 +701,7 @@ class Map(FitsArray):
     def imshow(self, mask=None, new_figure=True, title=None, xlabel='X',
                ylabel='Y', interpolation='nearest', origin=None, colorbar=True,
                percentile=0, **keywords):
+        import matplotlib.pyplot as mp
         if mask is None and self.coverage is not None:
             mask = self.coverage <= 0
 

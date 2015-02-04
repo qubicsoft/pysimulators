@@ -40,7 +40,7 @@ def test_profile():
         d = distance(input.shape, origin=origin)
         d /= bin
         d = d.astype(int)
-        m = np.max(d)
+        m = int(np.max(d))
         p = np.ndarray(int(m+1))
         n = np.zeros(m+1, int)
         for i in range(m+1):
@@ -57,7 +57,7 @@ def test_profile():
 def test_integrated_profile():
     def integrated_profile_slow(input, origin=None, bin=1.):
         d = distance(input.shape, origin=origin)
-        m = np.max(d)
+        m = int(np.max(d))
         x = np.ndarray(int(m+1))
         y = np.ndarray(int(m+1))
         for i in range(m+1):

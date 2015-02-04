@@ -1,4 +1,4 @@
-from __future__ import division
+from __future__ import absolute_import, division, print_function
 
 import astropy.io.fits as pyfits
 import numpy as np
@@ -65,14 +65,14 @@ def test_ls():
     map_ls_packed = Map(m['x'])
     map_ls_packed.header['TIME'] = m['time']
 
-    #print 'Elapsed time:', map_ls_packed.header['TIME']
+    #print('Elapsed time:', map_ls_packed.header['TIME'])
     #from tamasis import mapper_ls
     #map_ls_packed = mapper_ls(tod, projection, invntt=invntt, tol=1e-7, M=M,
     #                          callback=callback, criterion=False,
     #                          profile=profile)
     if profile:
         return
-    print 'Elapsed time:', map_ls_packed.header['TIME']
+    print('Elapsed time:', map_ls_packed.header['TIME'])
     assert m['nit'] < 50
     ref = packing(Map(path + 'madmapSpirePSW.fits'))
     assert_allclose(map_ls_packed, ref, atol=1e-5)

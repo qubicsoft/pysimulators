@@ -1,14 +1,5 @@
 #encoding: utf-8
-from __future__ import division
-
-import functools
-import inspect
-import numpy as np
-import operator
-import pyoperators
-import scipy.constants
-
-from itertools import izip
+from __future__ import absolute_import, division, print_function
 from pyoperators import (
     Operator, BlockDiagonalOperator, Cartesian2SphericalOperator,
     CompositionOperator, DenseOperator, DenseBlockDiagonalOperator,
@@ -20,13 +11,21 @@ from pyoperators.memory import empty, ones
 from pyoperators.utils import (
     float_dtype, isscalarlike, operation_assignment, product, strenum,
     tointtuple)
-
 from . import _flib as flib
 from .datatypes import FitsArray, Map
 from .quantities import Quantity, _divide_unit, _multiply_unit
 from .sparse import (
     FSRMatrix, FSRRotation2dMatrix, FSRRotation3dMatrix, SparseOperator)
 from .wcsutils import create_fitsheader
+import functools
+import inspect
+import numpy as np
+import operator
+import pyoperators
+import scipy.constants
+import sys
+if sys.version_info.major == 2:
+    from itertools import izip as zip
 
 __all__ = [
     'BlackBodyOperator',
@@ -545,7 +544,7 @@ class ProjectionBaseOperator(Operator):
             return
         if not output.flags.contiguous:
             if pyoperators.memory.verbose:
-                print 'Optimize me: Projection output is not contiguous.'
+                print('Optimize me: Projection output is not contiguous.')
             output_ = np.empty_like(output)
         else:
             output_ = output
@@ -564,7 +563,7 @@ class ProjectionBaseOperator(Operator):
             return
         if not input.flags.contiguous:
             if pyoperators.memory.verbose:
-                print 'Optimize me: Projection.T input is not contiguous.'
+                print('Optimize me: Projection.T input is not contiguous.')
             input_ = np.ascontiguousarray(input)
         else:
             input_ = input
@@ -919,7 +918,7 @@ class ProjectionOperator(SparseOperator):
                 index = self.matrix.data.index.ravel()
                 data = np.sqrt(self.matrix.data.r11**2 +
                                self.matrix.data.r21**2).ravel()
-                for i, d in izip(index, data):
+                for i, d in zip(index, data):
                     if i >= 0:
                         out[i] += d
             else:
@@ -995,7 +994,7 @@ class RollOperator(Operator):
     def __init__(self, n, axis=None, **keywords):
         Operator.__init__(self, **keywords)
         if axis is None:
-            axis = -1 if isscalarlike(n) else range(-len(n), 0)
+            axis = -1 if isscalarlike(n) else tuple(range(-len(n), 0))
         self.axis = (axis,) if isscalarlike(axis) else tuple(axis)
         self.n = (n,) * len(self.axis) if isscalarlike(n) else tuple(n)
         if len(self.axis) != len(self.n):
@@ -1004,12 +1003,12 @@ class RollOperator(Operator):
 
     def direct(self, input, output):
         output[...] = np.roll(input, self.n[0], axis=self.axis[0])
-        for n, axis in zip(self.n, self.axis)[1:]:
+        for n, axis in zip(self.n[1:], self.axis[1:]):
             output[...] = np.roll(output, n, axis=axis)
 
     def transpose(self, input, output):
         output[...] = np.roll(input, -self.n[0], axis=self.axis[0])
-        for n, axis in zip(self.n, self.axis)[1:]:
+        for n, axis in zip(self.n[1:], self.axis[1:]):
             output[...] = np.roll(output, -n, axis=axis)
 
 

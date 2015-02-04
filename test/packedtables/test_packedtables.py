@@ -434,8 +434,8 @@ def test_slice_size():
         if sn.stop < 0:
             sn = slice(sn.start, None, sn.step)
         assert_equal(array[sn], array[s])
-    for start in [None] + range(-n-1, n+1):
-        for stop in [None] + range(-n-1, n+1):
+    for start in [None] + list(range(-n - 1, n + 1)):
+        for stop in [None] + list(range(-n - 1, n + 1)):
             for step in range(-n - 1, n + 1):
                 if step == 0:
                     continue

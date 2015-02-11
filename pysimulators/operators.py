@@ -325,7 +325,7 @@ class ConvolutionTruncatedExponentialOperator(Operator):
     def direct(self, input, output):
         input_, nd, nt, int_all = _ravel_strided(input)
         output_, nd, nt, ont_all = _ravel_strided(output)
-        f = 'trexp_direct_v{0}'.format(input.dtype.itemsize)
+        f = 'trexp_direct_r{0}'.format(input.dtype.itemsize)
         try:
             getattr(flib.operators, f)(
                 input_, nd, nt, int_all,
@@ -336,7 +336,7 @@ class ConvolutionTruncatedExponentialOperator(Operator):
     def transpose(self, input, output):
         input_, nd, nt, int_all = _ravel_strided(input)
         output_, nd, nt, ont_all = _ravel_strided(output)
-        f = 'trexp_transpose_v{0}'.format(input.dtype.itemsize)
+        f = 'trexp_transpose_r{0}'.format(input.dtype.itemsize)
         try:
             getattr(flib.operators, f)(
                 input_, nd, nt, int_all,
@@ -846,7 +846,7 @@ class ProjectionOperator(SparseOperator):
             return out
 
         i, m = [_.dtype.itemsize for _ in (data.index, self.matrix)]
-        f = 'fsr{0}_kernel_i{1}_m{2}'.format(self._flib_id, i, m)
+        f = 'fsr{0}_kernel_i{1}_r{2}'.format(self._flib_id, i, m)
         n = product(shape)
         if hasattr(flib.operators, f):
             if operation in (operation_assignment, operator.iand,
@@ -895,7 +895,7 @@ class ProjectionOperator(SparseOperator):
         if operation not in (operation_assignment, operator.iadd):
             raise ValueError('Invalid reduction operation.')
 
-        f = 'fsr{0}_pt1_i{1}_m{2}_v{3}'.format(
+        f = 'fsr{0}_pt1_i{1}_r{2}_v{3}'.format(
             self._flib_id, self.matrix.data.index.dtype.itemsize,
             self.matrix.dtype.itemsize, out.dtype.itemsize)
         if hasattr(flib.operators, f):
@@ -968,7 +968,7 @@ class ProjectionOperator(SparseOperator):
         if operation not in (operation_assignment, operator.iadd):
             raise ValueError('Invalid reduction operation.')
 
-        f = 'fsr{0}_ptx_pt1_i{1}_m{2}_v{3}'.format(
+        f = 'fsr{0}_ptx_pt1_i{1}_r{2}_v{3}'.format(
             self._flib_id, self.matrix.data.index.dtype.itemsize,
             self.matrix.dtype.itemsize, dtypeout.itemsize)
         if hasattr(flib.operators, f):

@@ -9,7 +9,8 @@ Patch PyOperator's SparseOperator to include the following formats:
 
 """
 from __future__ import absolute_import, division, print_function
-from pyoperators import operation_assignment
+from pyoperators import (
+    CompositionOperator, DiagonalOperator, operation_assignment)
 from pyoperators.linear import SparseBase
 from pyoperators.memory import empty
 from pyoperators.utils import isscalarlike, product, tointtuple
@@ -487,6 +488,7 @@ class SparseOperator(SparseBase):
         self.set_rule('T', lambda s: SparseOperator(
             s.matrix._transpose(), block_shapein=s.block_shapeout,
             block_shapeout=s.block_shapein, dtype=s.dtype))
+        self.set_rule(('T', '.'), self._rule_pTp, CompositionOperator)
 
     def direct(self, input, output, operation=operation_assignment):
         if operation is operation_assignment:
@@ -632,6 +634,31 @@ class SparseOperator(SparseBase):
         if inplace:
             self.delete()
         return out
+
+    @staticmethod
+    def _rule_pTp(selfT, self):
+        if not isinstance(
+                self.matrix,
+                (FSRMatrix, FSRRotation2dMatrix, FSRRotation3dMatrix)) or \
+           self.matrix.ncolmax != 1 or self.shapein is None:
+            return
+        di = self.matrix.data.index.dtype
+        dr = self.matrix.dtype
+        dv = self.dtype
+        if di not in (np.int32, np.int64) or \
+           dr not in (np.float32, np.float64) or \
+           dv not in (np.float32, np.float64):
+            return
+        f = 'fsc_{0}_ncolmax1_i{1}_r{2}_v{3}'.format(
+            self.matrix._flib_id, di.itemsize, dr.itemsize, dv.itemsize)
+        try:
+            func = getattr(fsp, f)
+        except AttributeError:
+            return
+        m = self.matrix.data.ravel().view(np.int8)
+        data = np.zeros(self.shapein, dtype=self.dtype)
+        func(m, data.ravel())
+        return DiagonalOperator(data)
 
 
 pyoperators.SparseOperator = SparseOperator

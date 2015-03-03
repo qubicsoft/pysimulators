@@ -118,6 +118,14 @@ class Instrument(object):
         """
         self.detector.plot(**keywords)
 
+    def get_operator(self, sampling, scene):
+        """
+        Return the acquisition model for the specified sampling and scene
+        as an operator.
+
+        """
+        raise NotImplementedError()
+
     def get_invntt_operator(self, sampling, psd=None, bandwidth=None,
                             twosided=False, sigma=None, nep=None, fknee=0,
                             fslope=1, ncorr=None, fftw_flag='FFTW_MEASURE',

@@ -6,7 +6,8 @@ from copy import copy
 from pyoperators import BlockDiagonalOperator, MPI
 from pyoperators.memory import empty
 from pyoperators.utils import (
-    ifirst, isscalarlike, product, split, strelapsed, strenum, strnbytes)
+    ifirst, isscalarlike, operation_assignment, product, split, strelapsed,
+    strenum, strnbytes)
 from . import _flib as flib
 from .datatypes import Map, Tod
 from .instruments import Instrument, Imager
@@ -15,6 +16,7 @@ from .mpiutils import gather_fitsheader_if_needed
 from .operators import PointingMatrix, ProjectionOperator
 from .wcsutils import (
     RotationBoresightEquatorialOperator, create_fitsheader, fitsheader2shape)
+import operator
 import numpy as np
 import time
 
@@ -224,7 +226,7 @@ class Acquisition(object):
         proj = acq.get_projection_operator(**keywords)
         return proj.nbytes * len(self.sampling)
 
-    def get_noise(self, out=None):
+    def get_noise(self, out=None, operation=operation_assignment):
         """
         Return the noise realization according the instrument's noise model.
 
@@ -235,9 +237,12 @@ class Acquisition(object):
 
         """
         if out is None:
+            if operation is not operation_assignment:
+                raise ValueError('The output buffer is not specified.')
             out = empty((len(self.instrument), len(self.sampling)))
         for b in self.block:
-            self.instrument.get_noise(self.sampling[b], out=out[:, b])
+            self.instrument.get_noise(self.sampling[b], out=out[:, b],
+                                      operation=operation)
         return out
 
     @classmethod

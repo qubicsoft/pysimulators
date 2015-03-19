@@ -8,6 +8,8 @@ from numpy.distutils.core import setup
 from numpy.distutils.extension import Extension
 from hooks import get_cmdclass, get_version
 
+VERSION = '1.1'
+
 hooks.F2PY_TABLE = {
     'integer': {'int8': 'char',
                 'int16': 'short',
@@ -23,24 +25,16 @@ hooks.F2PY_TABLE = {
                 'p': 'complex_double',
                 'real32': 'complex_float',
                 'real64': 'complex_double'}}
-
-VERSION = '1.1'
+hooks.F90_COMPILE_ARGS_GFORTRAN += ['-fpack-derived']
+hooks.F90_COMPILE_ARGS_IFORT += ['-align norecords']
+if sys.platform == 'darwin':
+    hooks.F90_COMPILE_OPT_GFORTRAN = ['-O2']
 
 name = 'pysimulators'
 long_description = open('README.rst').read()
 keywords = 'scientific computing'
 platforms = 'MacOS X,Linux,Solaris,Unix,Windows'
 define_macros = [('GFORTRAN', None), ('PRECISION_REAL', 8)]
-if sys.platform == 'darwin':
-    extra_f90_compile_args = ['-O2 -funroll-loops -cpp',
-                              '-fopenmp -fpack-derived -Wall -g']
-else:
-    extra_f90_compile_args = ['-Ofast -funroll-loops -march=native -cpp',
-                              '-fopenmp -fpack-derived -Wall -g']
-
-# debugging options: -fcheck=all -fopt-info-vec-missed
-# -fprofile-use -fprofile-correction
-# ifort: -xHost -vec-report=1
 mod_dir = 'build/temp.' + get_platform() + '-%s.%s' % sys.version_info[:2]
 
 flib = ('fmod',
@@ -57,7 +51,6 @@ flib = ('fmod',
                      'src/module_wcs.f90'],
          'depends': [],
          'macros': define_macros,
-         'extra_f90_compile_args': extra_f90_compile_args,
          'include_dirs': [np.get_include()]})
 
 ext_modules = [Extension('pysimulators._flib',
@@ -69,10 +62,8 @@ ext_modules = [Extension('pysimulators._flib',
                                   'src/sparse.f90.src',
                                   'src/wcsutils.f90'],
                          define_macros=define_macros,
-                         extra_compile_args=['-Wno-format'],
-                         extra_f90_compile_args=extra_f90_compile_args,
                          include_dirs=[np.get_include(), mod_dir],
-                         libraries=['gomp', flib])]
+                         libraries=[flib])]
 
 
 setup(name=name,

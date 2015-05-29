@@ -253,7 +253,7 @@ class HealpixConvolutionGaussianOperator(Operator):
     """
     def __init__(self, fwhm=None, sigma=None, iter=3, lmax=None,
                  mmax=None, use_weights=False, datapath=None, dtype=float,
-                 **keywords):
+                 pol=True, **keywords):
         """
         Keywords are passed to the Healpy function smoothing.
 
@@ -279,17 +279,16 @@ class HealpixConvolutionGaussianOperator(Operator):
         self.mmax = mmax
         self.use_weights = use_weights
         self.datapath = datapath
+        self.pol = pol
         Operator.__init__(self, dtype=dtype, **keywords)
 
     def direct(self, input, output):
-        if input.ndim == 1:
-            input = input[:, None]
-            output = output[:, None]
-        for i, o in zip(input.T, output.T):
-            o[...] = hp.smoothing(
-                i, fwhm=self.fwhm, iter=self.iter, lmax=self.lmax,
-                mmax=self.mmax, use_weights=self.use_weights,
-                datapath=self.datapath, verbose=False)
+        if input.ndim > 1:
+            input = [_ for _ in input.T]
+        output.T[...] = hp.smoothing(
+            input, fwhm=self.fwhm, iter=self.iter, lmax=self.lmax,
+            mmax=self.mmax, use_weights=self.use_weights,
+            datapath=self.datapath, pol=self.pol, verbose=False)
 
     def validatein(self, shape):
         if len(shape) == 0 or len(shape) > 2:

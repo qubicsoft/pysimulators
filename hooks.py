@@ -344,13 +344,20 @@ class CleanCommand(clean):
             print(run_git('clean -fdX' + ('n' if self.dry_run else '')))
             return
 
+        dirs = 'build', self.distribution.get_name() + '.egg-info'
+        print dirs
+        for d in dirs:
+            f = os.path.join(root, d)
+            if os.path.exists(f):
+                self.__delete(f, dir=True)
+
         extensions = '.o', '.pyc', 'pyd', 'pyo', '.so'
         for root_, dirs, files in os.walk(root):
             for f in files:
                 if os.path.splitext(f)[-1] in extensions:
                     self.__delete(os.path.join(root_, f))
             for d in dirs:
-                if d in ('build', '__pycache__'):
+                if d == '__pycache__':
                     self.__delete(os.path.join(root_, d), dir=True)
 
     def __delete(self, file_, dir=False):

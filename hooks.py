@@ -350,7 +350,6 @@ class CleanCommand(clean):
             return
 
         dirs = 'build', self.distribution.get_name() + '.egg-info'
-        print dirs
         for d in dirs:
             f = os.path.join(root, d)
             if os.path.exists(f):

@@ -233,8 +233,7 @@ def create_fitsheader(naxes=None, dtype=None, fromdata=None, extname=None,
     else:
         header['xtension'] = ('IMAGE', 'Image extension')
     if typename is not None:
-        header['bitpix'] = (pyfits.PrimaryHDU.ImgCode[typename],
-                            'Array data type')
+        header['bitpix'] = (pyfits.DTYPE2BITPIX[typename], 'Array data type')
     header['naxis'] = (numaxis, 'Number of array dimensions')
     for dim in range(numaxis):
         header['naxis' + str(dim+1)] = naxes[dim]

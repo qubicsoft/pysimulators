@@ -15,7 +15,7 @@ long_description = open('README.rst').read()
 keywords = 'scientific computing'
 platforms = 'MacOS X,Linux,Solaris,Unix,Windows'
 define_macros = [('GFORTRAN', None), ('PRECISION_REAL', 8)]
-extra_f90_compile_args = ['-g -cpp -fopenmp -fpack-derived']
+extra_f90_compile_args = ['-g','-cpp','-fopenmp','-fpack-derived']
 
 if any(c in sys.argv for c in ('build', 'build_ext', 'install')):
     # write f2py's type mapping file

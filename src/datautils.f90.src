@@ -1,7 +1,7 @@
 module datautils
 
   use, intrinsic :: iso_fortran_env, only : int64, real64
-  use module_math, only : NAN_4, NAN_8, PI_4, PI_8
+  use module_math, only : NAN_8, PI_8
   implicit none
 
 contains

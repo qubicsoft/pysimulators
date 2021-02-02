@@ -48,16 +48,10 @@ module module_math_old
     real(p), parameter :: RAD2DEG = 180._p / PI
     !XXX should use ieee_arithmetic instead when gfortran implements it. So far, gfortran doesn't allow NaN, mInf, pInf conversion
     ! between different real kinds...
-#if PRECISION_REAL == 4
-    real(p), parameter ::                                                                                                          &
-        NaN  = transfer(b'11111111110000000000000000000000', 0._p),                                                                &
-        mInf = transfer(b'11111111100000000000000000000000', 0._p),                                                                &
-        pInf = transfer(b'01111111100000000000000000000000', 0._p)
-#elif PRECISION_REAL == 8
-    real(p), parameter ::                                                                                                          &
-        NaN  = transfer(b'1111111111111000000000000000000000000000000000000000000000000000', 0._p),                                &
-        mInf = transfer(b'1111111111110000000000000000000000000000000000000000000000000000', 0._p),                                &
-        pInf = transfer(b'0111111111110000000000000000000000000000000000000000000000000000', 0._p)
+#if PRECISION_REAL == 8
+    real(8), parameter :: NaN  = z'FFFFFFFF'
+    real(8), parameter :: mInf = z'FFFF0000'
+    real(8), parameter :: pInf = z'7FFF0000'
 #elif PRECISION_REAL == 16
     real(16), parameter :: NaN  = z'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'
     real(16), parameter :: mInf = z'FFFF0000000000000000000000000000'

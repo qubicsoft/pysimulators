@@ -49,9 +49,9 @@ module module_math_old
     !XXX should use ieee_arithmetic instead when gfortran implements it. So far, gfortran doesn't allow NaN, mInf, pInf conversion
     ! between different real kinds...
 #if PRECISION_REAL == 8
-    real(8), parameter :: NaN  = z'FFFFFFFF'
-    real(8), parameter :: mInf = z'FFFF0000'
-    real(8), parameter :: pInf = z'7FFF0000'
+    real(8), parameter :: NaN  = real(z'FFFFFFFF', 8)
+    real(8), parameter :: mInf = real(z'FFFF0000', 8)
+    real(8), parameter :: pInf = real(z'7FFF0000', 8)
 #elif PRECISION_REAL == 16
     real(16), parameter :: NaN  = z'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'
     real(16), parameter :: mInf = z'FFFF0000000000000000000000000000'

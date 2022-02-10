@@ -1,13 +1,13 @@
 module datautils
 
-  use, intrinsic :: iso_fortran_env, only : int32, int64, real32, real64
-  use module_math, only : NAN_4, NAN_8, PI_4, PI_8
+  use, intrinsic :: iso_fortran_env, only : int64, real64
+  use module_math, only : NAN_8, PI_8
   implicit none
 
 contains
 
-  ! <kind=real32,real64>
-  ! <size=4,8>
+  ! <kind=real64>
+  ! <size=8>
 
   subroutine distance_1d_r<size>(distance, nx, origin, scaling)
 

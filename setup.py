@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import numpy as np
-import glob
 import hooks
 import sys
 
@@ -36,11 +35,7 @@ long_description = open('README.rst').read()
 keywords = 'scientific computing'
 platforms = 'MacOS X,Linux,Solaris,Unix,Windows'
 define_macros = [('GFORTRAN', None), ('PRECISION_REAL', 8)]
-mod_dirs = glob.glob(
-    f'build/temp.*-{sys.version_info[0]}*{sys.version_info[1]}'
-)
-assert len(mod_dirs) == 1, f'glob returned {mod_dirs!r}'
-mod_dir = mod_dirs[0]
+mod_dir = 'build/temp.' + get_platform() + '-%s.%s' % sys.version_info[:2]
 
 flib = ('fmod',
         {'sources': ['src/module_precision.f90',

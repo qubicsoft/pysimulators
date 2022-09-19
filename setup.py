@@ -25,7 +25,7 @@ hooks.F2PY_TABLE = {
                 'p': 'complex_double',
                 'real32': 'complex_float',
                 'real64': 'complex_double'}}
-hooks.F90_COMPILE_ARGS_GFORTRAN += ['-fpack-derived']
+hooks.F90_COMPILE_ARGS_GFORTRAN += ['-fpack-derived','-fno-range-check']
 hooks.F90_COMPILE_ARGS_IFORT += ['-align norecords']
 if sys.platform == 'darwin':
     hooks.F90_COMPILE_OPT_GFORTRAN = ['-O2']

@@ -50,18 +50,18 @@ module module_math_old
     ! between different real kinds...
 #if PRECISION_REAL == 4
     real(p), parameter ::                                                                                                          &
-        NaN  = transfer('11111111110000000000000000000000'b, 0._p),                                                                &
-        mInf = transfer('11111111100000000000000000000000'b, 0._p),                                                                &
-        pInf = transfer('01111111100000000000000000000000'b, 0._p)
+        NaN  = transfer(b'11111111110000000000000000000000', 0._p),                                                                &
+        mInf = transfer(b'11111111100000000000000000000000', 0._p),                                                                &
+        pInf = transfer(b'01111111100000000000000000000000', 0._p)
 #elif PRECISION_REAL == 8
     real(p), parameter ::                                                                                                          &
-        NaN  = transfer('1111111111111000000000000000000000000000000000000000000000000000'b, 0._p),                                &
-        mInf = transfer('1111111111110000000000000000000000000000000000000000000000000000'b, 0._p),                                &
-        pInf = transfer('0111111111110000000000000000000000000000000000000000000000000000'b, 0._p)
+        NaN  = transfer(18444492273895866368, 0._p),                                &
+        mInf = transfer(18442240474082181120, 0._p),                                &
+        pInf = transfer(9218868437227405312, 0._p)
 #elif PRECISION_REAL == 16
-    real(16), parameter :: NaN  = 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'z
-    real(16), parameter :: mInf = 'FFFF0000000000000000000000000000'z
-    real(16), parameter :: pInf = '7FFF0000000000000000000000000000'z
+    real(16), parameter :: NaN  = z'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'
+    real(16), parameter :: mInf = z'FFFF0000000000000000000000000000'
+    real(16), parameter :: pInf = z'7FFF0000000000000000000000000000'
 #endif
 
 

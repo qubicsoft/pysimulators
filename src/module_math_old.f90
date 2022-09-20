@@ -50,13 +50,13 @@ module module_math_old
     ! between different real kinds...
 #if PRECISION_REAL == 4
     real(p), parameter ::                                                                                                          &
-        NaN  = transfer(b'11111111110000000000000000000000', 0._p),                                                                &
-        mInf = transfer(b'11111111100000000000000000000000', 0._p),                                                                &
-        pInf = transfer(b'01111111100000000000000000000000', 0._p)
+        NaN  = transfer(4290772992, 0._p),                                                                                         &
+        mInf = transfer(4286578688, 0._p),                                                                                         &
+        pInf = transfer(2139095040, 0._p)
 #elif PRECISION_REAL == 8
     real(p), parameter ::                                                                                                          &
-        NaN  = transfer(18444492273895866368, 0._p),                                &
-        mInf = transfer(18442240474082181120, 0._p),                                &
+        NaN  = transfer(18444492273895866368, 0._p),                                                                               &
+        mInf = transfer(18442240474082181120, 0._p),                                                                               &
         pInf = transfer(9218868437227405312, 0._p)
 #elif PRECISION_REAL == 16
     real(16), parameter :: NaN  = z'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'

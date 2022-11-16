@@ -35,7 +35,7 @@ long_description = open('README.rst').read()
 keywords = 'scientific computing'
 platforms = 'MacOS X,Linux,Solaris,Unix,Windows'
 define_macros = [('GFORTRAN', None), ('PRECISION_REAL', 8)]
-mod_dir = 'build/temp.' + get_platform() + '-%s.%s' % sys.version_info[:2]
+mod_dir = 'build/temp.' + get_platform() + '-cpython-%s%s' % sys.version_info[:2]
 
 flib = ('fmod',
         {'sources': ['src/module_precision.f90',

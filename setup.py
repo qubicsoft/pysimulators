@@ -35,7 +35,9 @@ long_description = open('README.rst').read()
 keywords = 'scientific computing'
 platforms = 'MacOS X,Linux,Solaris,Unix,Windows'
 define_macros = [('GFORTRAN', None), ('PRECISION_REAL', 8)]
-mod_dir = 'build/temp.' + get_platform() + '-cpython-%s%s' % sys.version_info[:2]
+mod_dirs = ['build/temp.' + get_platform() + '-cpython-%s%s' % sys.version_info[:2],
+            'build/temp.' + get_platform() + '-%s.%s' % sys.version_info[:2]
+            ]
 
 flib = ('fmod',
         {'sources': ['src/module_precision.f90',
@@ -62,7 +64,7 @@ ext_modules = [Extension('pysimulators._flib',
                                   'src/sparse.f90.src',
                                   'src/wcsutils.f90'],
                          define_macros=define_macros,
-                         include_dirs=[np.get_include(), mod_dir],
+                         include_dirs=[np.get_include()] + mod_dirs,
                          libraries=[flib])]
 
 

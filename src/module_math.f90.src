@@ -4,9 +4,19 @@ module module_math
         int64, real64, real128
     implicit none
 
+<<<<<<< HEAD
     real(real64), parameter :: NAN_8  = real(z'FFFFFFFF', real64)
     real(real64), parameter :: MINF_8 = real(z'FF700000', real64)
     real(real64), parameter :: PINF_8 = real(z'7F700000', real64)
+=======
+    real(real32), parameter :: NAN_4  = transfer(4294967295, real32)
+    real(real32), parameter :: MINF_4 = transfer(4285530112, real32)
+    real(real32), parameter :: PINF_4 = transfer(2138046464, real32)
+    real(real32), parameter :: PI_4 = 4._real32 * atan(1._real32)
+    real(real64), parameter :: NAN_8  = real(NAN_4, real64)
+    real(real64), parameter :: MINF_8 = real(MINF_4, real64)
+    real(real64), parameter :: PINF_8 = real(PINF_4, real64)
+>>>>>>> 32bit
     real(real64), parameter :: PI_8 = 4._real64 * atan(1._real64)
 #if PRECISION_REAL == 16
     real(real128), parameter :: NAN_16  = real(NAN_8, real128)

@@ -288,7 +288,7 @@ class HealpixConvolutionGaussianOperator(Operator):
         output.T[...] = hp.smoothing(
             input, fwhm=self.fwhm, iter=self.iter, lmax=self.lmax,
             mmax=self.mmax, use_weights=self.use_weights,
-            datapath=self.datapath, pol=self.pol, verbose=False)
+            datapath=self.datapath, pol=self.pol)
 
     def validatein(self, shape):
         if len(shape) == 0 or len(shape) > 2:

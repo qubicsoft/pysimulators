@@ -3,13 +3,13 @@
 !
 module module_geometry
 
-    use, intrinsic :: iso_fortran_env, only : real64
+    use, intrinsic :: iso_fortran_env, only : real32, real64
     implicit none
 
 contains
 
-    ! <kind=real64>
-    ! <size=8>
+    ! <kind=real32,real64>
+    ! <size=4,8>
 
     pure function intersection_polygon_unity_square_r<size>(xy, nvertices) result(out)
 

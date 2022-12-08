@@ -13,7 +13,6 @@ contains
     ! <rsize=4,4,8,4,4,8>
     ! <vkind=real32,real64,real64,real32,real64,real64>
     ! <vsize=4,8,8,4,8,8>
-
       
     subroutine fsc_block_1_2_matvec_i<isize>_r<rsize>_v<vsize>(data, input, output, ninput, noutput, ncolmax)
         integer(int64), intent(in) :: ninput, noutput, ncolmax
@@ -439,7 +438,7 @@ contains
 
     ! <rkind=real32,real64>
     ! <rsize=4,8>
- 
+      
     subroutine trexp_direct_inplace_r<rsize>(input, tau)
         real(<rkind>), intent(inout) :: input(:)
         real(<rkind>), intent(in)    :: tau
